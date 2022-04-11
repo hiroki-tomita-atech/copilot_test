@@ -9,9 +9,8 @@ const HOST = '0.0.0.0';
 // App
 const app = express();
 app.get('/', (req, res) => {
-    const topic = JSON.parse(process.env.COPILOT_SNS_TOPIC_ARNS);
-    console.log(topic);
-    res.sendFile(__dirname + '/html/index.html');
+    const queue = process.env.COPILOT_QUEUE_URI
+    console.log(queue);
 });
 
 app.listen(PORT, HOST);
