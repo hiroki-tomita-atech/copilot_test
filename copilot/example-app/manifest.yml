@@ -28,6 +28,11 @@ count: 1       # Number of tasks that should be running in your service.
 exec: true     # Enable running commands in your container.
 
 # Optional fields for more advanced use-cases.
+
+publish:
+  topics:
+    - name: sample-topic
+
 #
 #variables:                    # Pass environment variables as key value pairs.
 #  LOG_LEVEL: info
