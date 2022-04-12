@@ -8,7 +8,11 @@ type: Worker Service
 
 # Configuration for your containers and service.
 image:
-  location: node:latest
+  build:
+    context: .
+    dockerfile: ./copilot/receive-message-batch/Dockerfile
+  # Port exposed through your container to route traffic to it.
+  port: 8080
 
 cpu: 256       # Number of CPU units for the task.
 memory: 512    # Amount of memory in MiB used by the task.
@@ -19,7 +23,7 @@ exec: true     # Enable running commands in your container.
 # The events can be be received from an SQS queue via the env var $COPILOT_QUEUE_URI.
 subscribe:
   topics: 
-    - name: sample-topic
+    - name: sampleTopic
       service: example-app
 
 # Optional fields for more advanced use-cases.

@@ -1,17 +1,30 @@
 'use strict';
 
-const express = require('express');
+// const express = require('express');
+const { SQSClient, ReceiveMessageCommand, DeleteMessageCommand } = require('@aws-sdk/client-sqs');
 
-// Constants
-const PORT = 8080;
-const HOST = '0.0.0.0';
+const queueUrl = process.env.COPILOT_QUEUE_URI;
+const client = new SQSClient({ region: 'ap-northeast-1' });
 
-// App
-const app = express();
-app.get('/', (req, res) => {
-    const queue = process.env.COPILOT_QUEUE_URI
-    console.log(queue);
-});
+const receiveMessage = async () => {
+    try {
+        const out = await client.send(new ReceiveMessageCommand({
+            QueueUrl: queueUrl,
+            WaitTimeSeconds: 10,
+        }));
+        if(out.Messages == undefined || out.Messages.length == 0) {
+            return;
+        }
+        console.log('--- out ----');
+        console.log(JSON.parse(out.Messages[0].Body).Message);
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+        await client.send(new DeleteMessageCommand({
+            QueueUrl: queueUrl,
+            ReceiptHandle: out.Messages[0].ReceiptHandle
+        }));
+    } catch(err) {
+        console.log(err);
+    }
+};
+
+setInterval(receiveMessage, 10000);
