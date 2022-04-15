@@ -17,7 +17,7 @@ type: Backend Service
 # Configuration for your containers and service.
 image:
   build:
-    context: .
+    context: ./copilot/example-app/
     dockerfile: ./copilot/example-app/Dockerfile
   # Port exposed through your container to route traffic to it.
   port: 8080

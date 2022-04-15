@@ -9,7 +9,7 @@ type: Worker Service
 # Configuration for your containers and service.
 image:
   build:
-    context: .
+    context: ./copilot/receive-message-batch/
     dockerfile: ./copilot/receive-message-batch/Dockerfile
   # Port exposed through your container to route traffic to it.
   port: 8080
